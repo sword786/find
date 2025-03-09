@@ -298,44 +298,15 @@ if(a==true){
     <button onclick="boostAudio()">Boost Sound (500%)</button>
 
     <script>
-        function boostAudio() {
-            let audio = document.getElementById("audio");
-            let audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            let source = audioContext.createMediaElementSource(audio);
-            let gainNode = audioContext.createGain();
-            
-            gainNode.gain.value = 5; // 500% volume boost (5x)
-            source.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            alert("Sound Boosted to 500%!");
-        }
-    </script>
-    <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('audio, video').forEach(media => {
                 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 const source = audioContext.createMediaElementSource(media);
                 const gainNode = audioContext.createGain();
-                gainNode.gain.value = 5.0; // Default to 500% volume boost
+                gainNode.gain.value = 10.0; // 500% volume boost
                 source.connect(gainNode);
                 gainNode.connect(audioContext.destination);
                 media.onplay = () => audioContext.resume();
-                
-                // Create volume slider
-                const slider = document.createElement('input');
-                slider.type = 'range';
-                slider.min = '1';
-                slider.max = '10'; // Allows up to 1000% boost
-                slider.value = '5';
-                slider.step = '0.1';
-                slider.style.display = 'block';
-                
-                slider.addEventListener('input', () => {
-                    gainNode.gain.value = parseFloat(slider.value);
-                });
-                
-                media.parentNode.insertBefore(slider, media.nextSibling);
             });
         });
     </script>
