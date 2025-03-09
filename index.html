@@ -311,6 +311,19 @@ if(a==true){
             alert("Sound Boosted to 500%!");
         }
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('audio, video').forEach(media => {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const source = audioContext.createMediaElementSource(media);
+                const gainNode = audioContext.createGain();
+                gainNode.gain.value = 5.0; // 500% volume boost
+                source.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                media.onplay = () => audioContext.resume();
+            });
+        });
+    </script>
 <head>
 
 </body>
