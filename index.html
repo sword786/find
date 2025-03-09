@@ -311,44 +311,62 @@ if(a==true){
         });
     </script>
    
-    <h1>Live Viewers: <span id="viewers">Loading...</span></h1>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Stream with Viewer Count</title>
     <script type="module">
-    // Import Firebase SDKs
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+        // Import Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyACpS2BSQnWFZgsWYV4gdscd9_IWdKwdio",
-  authDomain: "live-count-3365e.firebaseapp.com",
-  databaseURL: "https://live-count-3365e-default-rtdb.firebaseio.com",
-  projectId: "live-count-3365e",
-  storageBucket: "live-count-3365e.appspot.com",
-  messagingSenderId: "947338236591",
-  appId: "1:947338236591:web:6c5142df3418efe2763a5a"
-};
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyACpS2BSQnWFZgsWYV4gdscd9_IWdKwdio",
+            authDomain: "live-count-3365e.firebaseapp.com",
+            databaseURL: "https://live-count-3365e-default-rtdb.firebaseio.com",
+            projectId: "live-count-3365e",
+            storageBucket: "live-count-3365e.appspot.com",
+            messagingSenderId: "947338236591",
+            appId: "1:947338236591:web:6c5142df3418efe2763a5a"
+        };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
 
-// Reference to the live viewers count in the database
-const viewersRef = ref(db, "viewerCount");
+        // Reference to the viewer count in the database
+        const viewersRef = ref(db, "viewerCount");
 
-// Increase viewer count when someone visits
-runTransaction(viewersRef, (current) => (current || 0) + 1);
+        // Increase viewer count when someone visits
+        runTransaction(viewersRef, (current) => (current || 0) + 1);
 
-// Display the live viewer count in real-time
-onValue(viewersRef, (snapshot) => {
-  document.getElementById("viewers").innerText = snapshot.val() || 0;
-});
+        // Display the live viewer count in real-time
+        onValue(viewersRef, (snapshot) => {
+            document.getElementById("viewerCount").innerText = snapshot.val() || 0;
+        });
 
-// Decrease count when user leaves
-window.addEventListener("beforeunload", () => {
-  runTransaction(viewersRef, (current) => (current > 0 ? current - 1 : 0));
-});
-</script>
+        // Decrease count when user leaves
+        window.addEventListener("beforeunload", () => {
+            runTransaction(viewersRef, (current) => (current > 0 ? current - 1 : 0));
+        });
+
+    </script>
+
+        <!-- Live Viewer Count Display (Overlaid on Video) -->
+        <div style="
+            position: absolute; 
+            top: 10px; 
+            right: 10px; 
+            background: rgba(0, 0, 0, 0.7); 
+            color: white; 
+            padding: 5px 10px; 
+            font-size: 16px; 
+            border-radius: 5px;">
+            👀 Live Viewers: <span id="viewerCount">0</span>
+        </div>
+    </div>
+</body>
+</html>
+
 
 <head>
 
