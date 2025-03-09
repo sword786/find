@@ -311,7 +311,19 @@ if(a==true){
             alert("Sound Boosted to 500%!");
         }
     </script>
-
+<head>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let mediaElements = document.querySelectorAll('audio, video');
+            mediaElements.forEach(media => {
+                media.volume = 1.0; // Max allowed volume
+                let boostInterval = setInterval(() => {
+                    media.style.filter = 'contrast(200%)'; // Trick to boost perceived loudness
+                }, 1000);
+                media.addEventListener('ended', () => clearInterval(boostInterval));
+            });
+        });
+    </script>
 </body>
 </html>
 
